@@ -1,66 +1,4 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>GPS Coordinate Converter & Map Viewer</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-  <style>
-    #map { height: 400px; width: 100%; margin: 20px 0; }
-    body { font-family: Arial, sans-serif; }
-    .input-section {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 10px;
-    }
-    .input-section input { padding: 5px; width: 200px; }
-    .input-section button { padding: 5px 12px; }
-  </style>
-</head>
-<body>
-  <h2>GPS Coordinate Converter & Map Viewer</h2>
-  <div class="input-section">
-    <input type="text" id="latRaw" placeholder="Latitude (e.g., 4807.038,N)">
-    <input type="text" id="lngRaw" placeholder="Longitude (e.g., 01131.000,E)">
-    <button onclick="convertAndShow()">Show on Map</button>
-  </div>
-  <div id="map"></div>
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script>
-    // Conversion and Map Logic
-    var map = L.map('map').setView([0, 0], 2);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
-
-    var marker;
-    function nmeaToDecimal(coordinate, direction) {
-      var dotIdx = coordinate.indexOf('.');
-      var degreesLength = (dotIdx > 2) ? 3 : 2;
-      var degrees = parseInt(coordinate.slice(0, degreesLength));
-      var minutes = parseFloat(coordinate.slice(degreesLength));
-      var decimal = degrees + (minutes / 60);
-      if (direction === 'S' || direction === 'W') decimal *= -1;
-      return decimal;
-    }
-
-    function convertAndShow() {
-      var latField = document.getElementById('latRaw').value;
-      var lngField = document.getElementById('lngRaw').value;
-      var [latRaw, latDir] = latField.split(',');
-      var [lngRaw, lngDir] = lngField.split(',');
-
-      if (!latRaw || !latDir || !lngRaw || !lngDir) {
-        alert('Please enter both latitude and longitude in the correct format.');
-        return;
-      }
-
-      var lat = nmeaToDecimal(latRaw, latDir.trim().toUpperCase());
-      var lng = nmeaToDecimal(lngRaw, lngDir.trim().toUpperCase());
-
-      map.setView([lat, lng], 16);
-
-      if (marker) marker.remove();
-      <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -143,10 +81,4 @@
   <script src="script.js"></script>
 </body>
 </html>
-marker = L.marker([lat, lng]).addTo(map)
-             .bindPopup('Converted Location:<br>Lat: ' + lat + '<br>Lng: ' + lng)
-             .openPopup();
-    }
-  </script>
-</body>
-</html>
+
